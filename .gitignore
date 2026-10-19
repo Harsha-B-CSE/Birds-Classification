@@ -1,0 +1,53 @@
+﻿# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtual environments
+venv/
+env/
+.venv/
+.env/
+
+# Django
+*.pyc
+db.sqlite3
+*.sqlite3
+media/
+staticfiles/
+
+# Large ML model files (store separately e.g. Google Drive / HuggingFace)
+*.pth
+*.pt
+*.h5
+*.pkl
+*.onnx
+
+# Dataset (large)
+CUB_200_2011/
+
+# Jupyter Notebooks checkpoints
+.ipynb_checkpoints/
+
+# IDE / Editor
+.vscode/
+.idea/
+*.suo
+*.user
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Uploads folder
+uploads/
+
+# Environment variables
+.env
+*.env
