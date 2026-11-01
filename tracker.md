@@ -1,7 +1,7 @@
 # 📌 Phased Execution Roadmap & Task Tracker
 ## Project: Birds Classification & Avian Intelligence System (Feathered Insights)
 
-> **Vibe Coding Tracking Ledger:**
+
 > Use this document as the single source of truth for immediate next steps, sprint velocity, completed milestones, and pending tasks. Update status tags (`[ ]` Pending, `[/]` In Progress, `[x]` Completed) after every atomic development unit.
 
 ---
