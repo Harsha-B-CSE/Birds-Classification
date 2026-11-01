@@ -87,7 +87,7 @@ Phase 4: Dockerization & Cloud Run Deploy    [█░░░░░░░░░] 10
 
 ## 📝 Recent Change Log
 
-- **2026-10-25**: 
+- ****: 
   - Created `myapp/ml/dataset_prep.py` - Dataset audit & merge script for Indian Birds 25 + CUB-200.
   - Updated `myapp/services/cache_manager.py` - Added `cleanup_before_training()` for 5.0 GB limit enforcement.
   - Created `myapp/ml/train_swin.py` - RTX 3060 optimized training with AMP, progressive augmentation, gradient accumulation, class-balanced sampler.
@@ -96,13 +96,13 @@ Phase 4: Dockerization & Cloud Run Deploy    [█░░░░░░░░░] 10
   - Dataset audit complete: 37,500 Indian Birds images (25 classes), 11,788 CUB-200 images (200 classes), 0 corrupted, 1 unsupported (dataset.csv in CUB images).
   - Merged dataset ready at `D:\BirdsCache\data\merged_dataset` (224 classes, 49,288 images).
 
-- **2026-10-23**: 
+- ****: 
   - Exported and validated ONNX classifier: 95.33% Top-1 / 98.33% Top-5 on 300 held-out CUB images; 43 ms CPU forward pass; 2e-6 max numerical difference.
   - Calibrated 3-check gates (`P(bird) >= 0.60`, energy `<= -3.90`, confidence `>= 0.40`); 30/30 non-bird photos rejected.
   - Added Wikipedia + iNaturalist + GBIF + NCBI enrichment with Firestore/local caching; cache hits return in ~1 ms.
   - Rebuilt identification UI with split CSS/JS, fixed CSRF, upload validation, and 422 rendering; added device-keyed `/history/` field log.
 
-- **2026-10-20**: Initialized complete 6-file foundation:
+- ****: Initialized complete 6-file foundation:
   - `PRD.md` — Product requirements, user personas, success criteria, and non-functional requirements.
   - `Architecture.md` — System topology, 3-check verification cascade, latency budget, and Firestore schema.
   - `Design.md` — Natural Metallic design system, HSL color tokens, typography, component blueprints, and micro-interactions.
