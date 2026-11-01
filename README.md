@@ -69,7 +69,7 @@ You can either:
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/HARSHA-HAPPY/Birds-classification.git
+git clone [https://github.com/Harsha-B-CSE/Birds-Classification.git]
 cd Birds-classification
 ```
 
