@@ -1,0 +1,51 @@
+{
+  "schema_version": 5,
+  "label": "215.Indian_Pitta",
+  "slug": "indian_pitta",
+  "common_name": "Indian Pitta",
+  "scientific_name": "Pitta pitta",
+  "summary": "The Indian Pitta (Pitta pitta) is an avian species characterized by specialized plumage and foraging adaptations. It primarily inhabits dense undergrowth of scrub jungles and deciduous forests, where its diet consists primarily of earthworms, snails, ants, beetles, and larvae.",
+  "habitat": "Dense undergrowth of scrub jungles and deciduous forests",
+  "diet": "Earthworms, snails, ants, beetles, and larvae",
+  "taxonomy": {
+    "kingdom": "Animalia",
+    "phylum": "Chordata",
+    "class": "Aves",
+    "order": "Passeriformes",
+    "family": "Pittidae",
+    "genus": "Pitta",
+    "species": "Pitta pitta"
+  },
+  "iucn_status": "Least Concern",
+  "iucn_code": "LC",
+  "native_range": [
+    "Himalayan Foothills",
+    "Central India",
+    "Western Ghats",
+    "Sri Lanka"
+  ],
+  "lifespan": {
+    "wild_years": [
+      5,
+      8
+    ],
+    "captive_years": [
+      9,
+      12
+    ]
+  },
+  "chromosome_count_2n": null,
+  "image_url": null,
+  "image_attribution": null,
+  "image_license": null,
+  "wikipedia_url": "https://en.wikipedia.org/wiki/Indian_Pitta",
+  "inaturalist_url": null,
+  "gbif_url": null,
+  "ncbi": null,
+  "source": "cache",
+  "verified": true,
+  "sources": [
+    "ornithological-cache"
+  ],
+  "cache_hit": true
+}

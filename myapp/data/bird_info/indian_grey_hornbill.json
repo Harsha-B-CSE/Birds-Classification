@@ -1,0 +1,50 @@
+{
+  "schema_version": 5,
+  "label": "213.Indian_Grey_Hornbill",
+  "slug": "indian_grey_hornbill",
+  "common_name": "Indian Grey Hornbill",
+  "scientific_name": "Ocyceros hornbill",
+  "summary": "The Indian Grey Hornbill (Ocyceros hornbill) is an avian species characterized by specialized plumage and foraging adaptations. It primarily inhabits deciduous forests, open woodlands, and urban canopies, where its diet consists primarily of ficus fruits, berries, small lizards, and insects.",
+  "habitat": "Deciduous forests, open woodlands, and urban canopies",
+  "diet": "Ficus fruits, berries, small lizards, and insects",
+  "taxonomy": {
+    "kingdom": "Animalia",
+    "phylum": "Chordata",
+    "class": "Aves",
+    "order": "Bucerotiformes",
+    "family": "Bucerotidae",
+    "genus": "Ocyceros",
+    "species": "Ocyceros hornbill"
+  },
+  "iucn_status": "Least Concern",
+  "iucn_code": "LC",
+  "native_range": [
+    "India",
+    "Nepal",
+    "Bangladesh"
+  ],
+  "lifespan": {
+    "wild_years": [
+      18,
+      25
+    ],
+    "captive_years": [
+      28,
+      35
+    ]
+  },
+  "chromosome_count_2n": null,
+  "image_url": null,
+  "image_attribution": null,
+  "image_license": null,
+  "wikipedia_url": "https://en.wikipedia.org/wiki/Indian_Grey_Hornbill",
+  "inaturalist_url": null,
+  "gbif_url": null,
+  "ncbi": null,
+  "source": "cache",
+  "verified": true,
+  "sources": [
+    "ornithological-cache"
+  ],
+  "cache_hit": true
+}

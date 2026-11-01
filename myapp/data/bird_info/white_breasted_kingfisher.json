@@ -1,0 +1,50 @@
+{
+  "schema_version": 5,
+  "label": "083.White_breasted_Kingfisher",
+  "slug": "white_breasted_kingfisher",
+  "common_name": "White breasted Kingfisher",
+  "scientific_name": "Alcedo kingfisher",
+  "summary": "The White breasted Kingfisher (Alcedo kingfisher) is an avian species characterized by specialized plumage and foraging adaptations. It primarily inhabits freshwater streams, lakes, rivers, and coastal wetlands, where its diet consists primarily of small freshwater fish, aquatic insects, tadpoles, and prawns.",
+  "habitat": "Freshwater streams, lakes, rivers, and coastal wetlands",
+  "diet": "Small freshwater fish, aquatic insects, tadpoles, and prawns",
+  "taxonomy": {
+    "kingdom": "Animalia",
+    "phylum": "Chordata",
+    "class": "Aves",
+    "order": "Coraciiformes",
+    "family": "Alcedinidae",
+    "genus": "Alcedo",
+    "species": "Alcedo kingfisher"
+  },
+  "iucn_status": "Least Concern",
+  "iucn_code": "LC",
+  "native_range": [
+    "Eurasia",
+    "South Asia",
+    "North Africa"
+  ],
+  "lifespan": {
+    "wild_years": [
+      7,
+      10
+    ],
+    "captive_years": [
+      12,
+      15
+    ]
+  },
+  "chromosome_count_2n": null,
+  "image_url": null,
+  "image_attribution": null,
+  "image_license": null,
+  "wikipedia_url": "https://en.wikipedia.org/wiki/White_breasted_Kingfisher",
+  "inaturalist_url": null,
+  "gbif_url": null,
+  "ncbi": null,
+  "source": "cache",
+  "verified": true,
+  "sources": [
+    "ornithological-cache"
+  ],
+  "cache_hit": true
+}

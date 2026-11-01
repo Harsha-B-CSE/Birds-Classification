@@ -1,0 +1,6 @@
+{
+  "model_name": "swin_tiny_patch4_window7_224.ms_in1k",
+  "num_classes": 224,
+  "image_size": 224,
+  "best_val_accuracy": 0.15
+}

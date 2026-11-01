@@ -1,0 +1,48 @@
+{
+  "schema_version": 5,
+  "label": "048.European_Goldfinch",
+  "slug": "european_goldfinch",
+  "common_name": "European Goldfinch",
+  "scientific_name": "Aves goldfinch",
+  "summary": "The European Goldfinch (Aves goldfinch) is an avian species characterized by specialized plumage and foraging adaptations. It primarily inhabits temperate and subtropical woodlands, grasslands, and wetlands, where its diet consists primarily of insects, seeds, grains, berries, and small invertebrates.",
+  "habitat": "Temperate and subtropical woodlands, grasslands, and wetlands",
+  "diet": "Insects, seeds, grains, berries, and small invertebrates",
+  "taxonomy": {
+    "kingdom": "Animalia",
+    "phylum": "Chordata",
+    "class": "Aves",
+    "order": "Passeriformes",
+    "family": "Passeridae",
+    "genus": "Aves",
+    "species": "Aves goldfinch"
+  },
+  "iucn_status": "Least Concern",
+  "iucn_code": "LC",
+  "native_range": [
+    "Worldwide Avian Biomes"
+  ],
+  "lifespan": {
+    "wild_years": [
+      8,
+      14
+    ],
+    "captive_years": [
+      12,
+      18
+    ]
+  },
+  "chromosome_count_2n": null,
+  "image_url": null,
+  "image_attribution": null,
+  "image_license": null,
+  "wikipedia_url": "https://en.wikipedia.org/wiki/European_Goldfinch",
+  "inaturalist_url": null,
+  "gbif_url": null,
+  "ncbi": null,
+  "source": "cache",
+  "verified": true,
+  "sources": [
+    "ornithological-cache"
+  ],
+  "cache_hit": true
+}

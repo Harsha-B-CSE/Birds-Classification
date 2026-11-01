@@ -1,0 +1,50 @@
+{
+  "schema_version": 5,
+  "label": "003.Sooty_Albatross",
+  "slug": "sooty_albatross",
+  "common_name": "Sooty Albatross",
+  "scientific_name": "Phoebastria albatross",
+  "summary": "The Sooty Albatross (Phoebastria albatross) is an avian species characterized by specialized plumage and foraging adaptations. It primarily inhabits pelagic oceans and remote oceanic islands, where its diet consists primarily of squid, schooling fish, krill, and pelagic crustaceans.",
+  "habitat": "Pelagic oceans and remote oceanic islands",
+  "diet": "Squid, schooling fish, krill, and pelagic crustaceans",
+  "taxonomy": {
+    "kingdom": "Animalia",
+    "phylum": "Chordata",
+    "class": "Aves",
+    "order": "Procellariiformes",
+    "family": "Diomedeidae",
+    "genus": "Phoebastria",
+    "species": "Phoebastria albatross"
+  },
+  "iucn_status": "Near Threatened",
+  "iucn_code": "NT",
+  "native_range": [
+    "Pacific Ocean",
+    "Southern Ocean",
+    "North America"
+  ],
+  "lifespan": {
+    "wild_years": [
+      40,
+      50
+    ],
+    "captive_years": [
+      15,
+      25
+    ]
+  },
+  "chromosome_count_2n": null,
+  "image_url": null,
+  "image_attribution": null,
+  "image_license": null,
+  "wikipedia_url": "https://en.wikipedia.org/wiki/Sooty_Albatross",
+  "inaturalist_url": null,
+  "gbif_url": null,
+  "ncbi": null,
+  "source": "cache",
+  "verified": true,
+  "sources": [
+    "ornithological-cache"
+  ],
+  "cache_hit": true
+}

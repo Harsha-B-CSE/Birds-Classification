@@ -1,0 +1,51 @@
+{
+  "schema_version": 5,
+  "label": "004.Groove_billed_Ani",
+  "slug": "groove_billed_ani",
+  "common_name": "Groove billed Ani",
+  "scientific_name": "Crotophaga ani",
+  "summary": "The Groove billed Ani (Crotophaga ani) is an avian species characterized by specialized plumage and foraging adaptations. It primarily inhabits open pastures, scrublands, and agricultural margins, where its diet consists primarily of grasshoppers, beetles, caterpillars, and fruits.",
+  "habitat": "Open pastures, scrublands, and agricultural margins",
+  "diet": "Grasshoppers, beetles, caterpillars, and fruits",
+  "taxonomy": {
+    "kingdom": "Animalia",
+    "phylum": "Chordata",
+    "class": "Aves",
+    "order": "Cuculiformes",
+    "family": "Cuculidae",
+    "genus": "Crotophaga",
+    "species": "Crotophaga ani"
+  },
+  "iucn_status": "Least Concern",
+  "iucn_code": "LC",
+  "native_range": [
+    "Central America",
+    "South America",
+    "Caribbean",
+    "Southern USA"
+  ],
+  "lifespan": {
+    "wild_years": [
+      6,
+      9
+    ],
+    "captive_years": [
+      10,
+      14
+    ]
+  },
+  "chromosome_count_2n": null,
+  "image_url": null,
+  "image_attribution": null,
+  "image_license": null,
+  "wikipedia_url": "https://en.wikipedia.org/wiki/Groove_billed_Ani",
+  "inaturalist_url": null,
+  "gbif_url": null,
+  "ncbi": null,
+  "source": "cache",
+  "verified": true,
+  "sources": [
+    "ornithological-cache"
+  ],
+  "cache_hit": true
+}

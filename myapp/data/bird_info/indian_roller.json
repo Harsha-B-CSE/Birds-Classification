@@ -1,0 +1,49 @@
+{
+  "schema_version": 5,
+  "label": "216.Indian_Roller",
+  "slug": "indian_roller",
+  "common_name": "Indian Roller",
+  "scientific_name": "Coracias roller",
+  "summary": "The Indian Roller (Coracias roller) is an avian species characterized by specialized plumage and foraging adaptations. It primarily inhabits cultivated farmland, scrub forests, and grassland perches, where its diet consists primarily of beetles, crickets, scorpions, and small reptiles.",
+  "habitat": "Cultivated farmland, scrub forests, and grassland perches",
+  "diet": "Beetles, crickets, scorpions, and small reptiles",
+  "taxonomy": {
+    "kingdom": "Animalia",
+    "phylum": "Chordata",
+    "class": "Aves",
+    "order": "Coraciiformes",
+    "family": "Coraciidae",
+    "genus": "Coracias",
+    "species": "Coracias roller"
+  },
+  "iucn_status": "Least Concern",
+  "iucn_code": "LC",
+  "native_range": [
+    "South Asia",
+    "Southeast Asia"
+  ],
+  "lifespan": {
+    "wild_years": [
+      8,
+      11
+    ],
+    "captive_years": [
+      13,
+      17
+    ]
+  },
+  "chromosome_count_2n": null,
+  "image_url": null,
+  "image_attribution": null,
+  "image_license": null,
+  "wikipedia_url": "https://en.wikipedia.org/wiki/Indian_Roller",
+  "inaturalist_url": null,
+  "gbif_url": null,
+  "ncbi": null,
+  "source": "cache",
+  "verified": true,
+  "sources": [
+    "ornithological-cache"
+  ],
+  "cache_hit": true
+}

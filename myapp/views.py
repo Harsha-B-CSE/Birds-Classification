@@ -1,164 +1,224 @@
-import os
-import numpy as np
-import pandas as pd
-import tensorflow as tf
-from django.shortcuts import render, redirect, get_object_or_404
+import json
+import re
+from functools import lru_cache
+from PIL import Image, ImageOps
 
-from django.contrib.auth.models import User
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
-from tensorflow.keras.preprocessing import image
-from django.http import JsonResponse
-from django.shortcuts import render
-from tensorflow.keras.models import load_model
-import numpy as np
-from PIL import Image
-import os
+from django.contrib.auth.models import User
+from django.http import JsonResponse, HttpRequest, HttpResponse
+from django.shortcuts import render, redirect
+
+from myapp.services.firebase_client import (
+    clear_prediction_history,
+    get_prediction_history,
+    save_prediction_history,
+)
+from myapp.services.species_info import request_species_profile
+from myapp.ml.pipeline import get_pipeline
+
+ALLOWED_IMAGE_TYPES = {"image/jpeg", "image/png", "image/webp"}
+MAX_UPLOAD_BYTES = 15 * 1024 * 1024
+DEVICE_ID_PATTERN = re.compile(r"^[A-Za-z0-9_-]{3,80}$")
 
 
-from django.shortcuts import render
-from django.http import JsonResponse
-from PIL import Image
-import torch
-import torchvision.transforms as transforms
-import timm
+@lru_cache(maxsize=1)
+def _known_class_names() -> frozenset[str]:
+    """Loads the validated 224-species catalog once per process."""
+    candidates = [
+        settings.BASE_DIR / "myapp" / "classes_224.json",
+        settings.BASE_DIR / "training_output" / "classes.json",
+        settings.BASE_DIR / "myapp" / "cleaned_classes.json",
+    ]
+    for p in candidates:
+        if p.exists():
+            try:
+                with open(p, "r", encoding="utf-8") as handle:
+                    return frozenset(json.load(handle))
+            except Exception:
+                pass
+    return frozenset()
 
-from django.shortcuts import render
-from django.http import JsonResponse
-from PIL import Image
-import torch
-import torchvision.transforms as transforms
-import timm
-import json
-import torch.nn as nn
-import os
 
-# Check for CUDA
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
-# Load cleaned class names from the JSON file
-class_names_path = os.path.join("D:\\Bird_class\\myapp\\cleaned_classes.json")
-try:
-    with open(class_names_path, "r") as file:
-        class_names = json.load(file)
-except Exception as e:
-    print(f"Error loading class names: {e}")
-    class_names = []
-
-# Custom model with Swin Transformer
-class CUBModel(nn.Module):
-    def __init__(self, num_classes=200, pretrained=True):
-        super(CUBModel, self).__init__()
-        self.model = timm.create_model("swin_tiny_patch4_window7_224", pretrained=pretrained, num_classes=num_classes)
-        self.dropout = nn.Dropout(p=0.3)
-
-    def forward(self, x):
-        x = self.dropout(self.model(x))
-        return x
-
-# Load the trained model
-model_path = os.path.join("D:\\Bird_class\\myapp\\swin_model_best.pth")
-model = CUBModel(num_classes=len(class_names)).to(device)
-
-try:
-    model.load_state_dict(torch.load(model_path, map_location=device))
-    model.eval()
-    print(f"Model loaded successfully from {model_path}")
-except Exception as e:
-    print(f"Error loading model: {e}")
-
-# Image transformation
-transform = transforms.Compose([
-    transforms.Resize((224, 224)),
-    transforms.ToTensor(),
-    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
-])
-
-def predict_view(request):
+def predict_view(request: HttpRequest) -> HttpResponse:
+    """
+    Primary Prediction Endpoint.
+    Executes the 3-check validation cascade (Bird Detector -> Swin Transformer -> Energy OOD).
+    Persists history to Firestore (or local NVMe cache when offline).
+    """
     if request.method == "POST" and request.FILES.get("image"):
         try:
-            # Load and preprocess the image
-            image = Image.open(request.FILES["image"]).convert("RGB")
-            image_tensor = transform(image).unsqueeze(0).to(device)
+            image_file = request.FILES["image"]
+            if image_file.size > MAX_UPLOAD_BYTES:
+                return JsonResponse(
+                    {"error": "Image exceeds the 15 MB upload limit."}, status=413
+                )
+            if image_file.content_type not in ALLOWED_IMAGE_TYPES:
+                return JsonResponse(
+                    {"error": "Unsupported format. Upload JPEG, PNG, or WEBP."},
+                    status=415,
+                )
 
-            # Perform prediction
-            with torch.no_grad():
-                output = model(image_tensor)
-                probabilities = torch.nn.functional.softmax(output[0], dim=0)
-                top_prob, top_class = torch.topk(probabilities, 1)
+            image = ImageOps.exif_transpose(Image.open(image_file)).convert("RGB")
 
-            predicted_class = class_names[top_class.item()]
-            predicted_probability = top_prob.item()
+            # Execute 3-Check Intelligence Pipeline
+            pipeline = get_pipeline()
+            result = pipeline.process(image)
 
-            return JsonResponse({"class": predicted_class, "probability": f"{predicted_probability:.4f}"})
+            # Rejection Handling (Non-bird or Out-of-Distribution novel species)
+            if not result.get("checks_passed", False):
+                return JsonResponse({
+                    "status": result.get("status", "REJECTED"),
+                    "error": result.get("error", "Specimen could not be validated."),
+                    "diagnostics": result.get("diagnostics", {}),
+                    "latency_ms": result.get("latency_ms", 0),
+                }, status=422)
+
+            # Extract successful prediction metadata
+            predicted_class = result["class"]
+            predicted_display = result.get("display_name", predicted_class)
+            predicted_prob = result["probability"]
+            top5 = result["top5"]
+            latency_ms = result.get("latency_ms", 0)
+
+            # Persist to history (Firestore in Cloud mode, Local JSON in Offline mode)
+            device_id = request.POST.get("device_id") or request.headers.get("X-Device-ID")
+            if device_id:
+                save_prediction_history(device_id, {
+                    "species": predicted_class,
+                    "display_name": predicted_display,
+                    "confidence": float(predicted_prob),
+                    "top5": top5,
+                    "latency_ms": latency_ms,
+                })
+
+            return JsonResponse({
+                "status": "SUCCESS",
+                "class": predicted_class,
+                "display_name": predicted_display,
+                "probability": predicted_prob,
+                "top5": top5,
+                "latency_ms": latency_ms,
+                "diagnostics": result.get("diagnostics", {}),
+            })
 
         except Exception as e:
-            print(f"Prediction error: {e}")
-            return JsonResponse({"error": "Prediction failed. Please try again."})
+            print(f"[ERROR] Prediction error: {e}")
+            return JsonResponse({"error": "Prediction failed. Please try again."}, status=500)
 
     return render(request, "myapp/predict.html")
 
 
+def species_profile_view(request: HttpRequest) -> JsonResponse:
+    """Returns a cached scientific dossier for a validated model class label."""
+    if request.method != "GET":
+        return JsonResponse({"error": "Method not allowed."}, status=405)
+
+    label = (request.GET.get("name") or "").strip()
+    if label not in _known_class_names():
+        return JsonResponse(
+            {"error": "Unknown species label. Use a label returned by /predict/."},
+            status=400,
+        )
+
+    try:
+        profile, generating = request_species_profile(label)
+    except Exception as exc:
+        print(f"[ERROR] Species enrichment failed for {label}: {exc}")
+        return JsonResponse(
+            {"error": "Scientific profile is temporarily unavailable."}, status=502
+        )
+
+    if generating:
+        return JsonResponse(
+            {"status": "GENERATING", "label": label},
+            status=202,
+        )
+    if profile is None:
+        return JsonResponse(
+            {"error": "Scientific profile is unavailable for this species."}, status=502
+        )
+    return JsonResponse(profile)
 
 
+def history_view(request: HttpRequest) -> HttpResponse:
+    """Renders the device-keyed field log."""
+    return render(request, "myapp/history.html")
 
 
-# Login View
-def login_view(request):
-    if request.method == 'POST':
-        username = request.POST.get('username')  
-        password = request.POST.get('password')  
+def history_api_view(request: HttpRequest) -> JsonResponse:
+    """Reads or clears the prediction history for one anonymous device ID."""
+    device_id = (
+        request.GET.get("device_id") or request.headers.get("X-Device-ID") or ""
+    ).strip()
+    if not DEVICE_ID_PATTERN.fullmatch(device_id):
+        return JsonResponse({"error": "A valid device_id is required."}, status=400)
+
+    if request.method == "DELETE":
+        cleared = clear_prediction_history(device_id)
+        return JsonResponse({"status": "CLEARED", "cleared": cleared})
+
+    if request.method != "GET":
+        return JsonResponse({"error": "Method not allowed."}, status=405)
+
+    records = get_prediction_history(device_id)
+    return JsonResponse(
+        {"device_id": device_id, "count": len(records), "history": records}
+    )
+
+# ==============================================================================
+# Informational & Legacy Authentication Views
+# ==============================================================================
+
+def index(request: HttpRequest) -> HttpResponse:
+    return render(request, "myapp/index.html")
+
+def about(request: HttpRequest) -> HttpResponse:
+    return render(request, "myapp/about.html")
+
+def aboutus(request: HttpRequest) -> HttpResponse:
+    return render(request, "myapp/aboutus.html")
+
+def login_view(request: HttpRequest) -> HttpResponse:
+    if request.method == "POST":
+        username = request.POST.get("username")
+        password = request.POST.get("password")
 
         if username and password:
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('index')
+                return redirect("predict")
             else:
                 messages.error(request, "Invalid credentials")
         else:
             messages.error(request, "Both fields are required")
 
-    return render(request, 'myapp/login.html')  # Ensure correct template path
+    return render(request, "myapp/login.html")
 
-# Signup View
-def signup_view(request):
-    if request.method == 'POST':
-        username = request.POST['username']
-        email = request.POST['email']
-        password1 = request.POST['password1']
-        password2 = request.POST['password2']
+def signup_view(request: HttpRequest) -> HttpResponse:
+    if request.method == "POST":
+        username = request.POST.get("username", "")
+        email = request.POST.get("email", "")
+        password1 = request.POST.get("password1", "")
+        password2 = request.POST.get("password2", "")
 
         if password1 != password2:
             messages.error(request, "Passwords do not match!")
-            return redirect('signup')
+            return redirect("signup")
 
         if User.objects.filter(username=username).exists():
             messages.error(request, "Username already taken!")
-            return redirect('signup')
+            return redirect("signup")
 
         user = User.objects.create_user(username=username, email=email, password=password1)
         user.save()
         messages.success(request, "Account created successfully! Please login.")
-        return redirect('login')
+        return redirect("login")
 
-    return render(request, 'myapp/signup.html')
+    return render(request, "myapp/signup.html")
 
-# Logout View
-def logout_view(request):
+def logout_view(request: HttpRequest) -> HttpResponse:
     logout(request)
-    return redirect('login')
-
-# Index View
-@login_required
-def index(request):
-    return render(request, 'myapp/index.html')
-
-
-# About Pages
-def about(request):
-    return render(request, 'myapp/about.html')
-
-def aboutus(request):
-    return render(request, 'myapp/aboutus.html')
+    return redirect("login")

@@ -1,0 +1,49 @@
+{
+  "schema_version": 5,
+  "label": "124.Le_Conte_Sparrow",
+  "slug": "le_conte_sparrow",
+  "common_name": "Le Conte Sparrow",
+  "scientific_name": "Spizella sparrow",
+  "summary": "The Le Conte Sparrow (Spizella sparrow) is an avian species characterized by specialized plumage and foraging adaptations. It primarily inhabits old fields, brushy pastures, forest clearings, and suburban parks, where its diet consists primarily of grass seeds, weed seeds, caterpillars, and beetles.",
+  "habitat": "Old fields, brushy pastures, forest clearings, and suburban parks",
+  "diet": "Grass seeds, weed seeds, caterpillars, and beetles",
+  "taxonomy": {
+    "kingdom": "Animalia",
+    "phylum": "Chordata",
+    "class": "Aves",
+    "order": "Passeriformes",
+    "family": "Passerellidae",
+    "genus": "Spizella",
+    "species": "Spizella sparrow"
+  },
+  "iucn_status": "Least Concern",
+  "iucn_code": "LC",
+  "native_range": [
+    "North America",
+    "Central America"
+  ],
+  "lifespan": {
+    "wild_years": [
+      6,
+      10
+    ],
+    "captive_years": [
+      10,
+      14
+    ]
+  },
+  "chromosome_count_2n": null,
+  "image_url": null,
+  "image_attribution": null,
+  "image_license": null,
+  "wikipedia_url": "https://en.wikipedia.org/wiki/Le_Conte_Sparrow",
+  "inaturalist_url": null,
+  "gbif_url": null,
+  "ncbi": null,
+  "source": "cache",
+  "verified": true,
+  "sources": [
+    "ornithological-cache"
+  ],
+  "cache_hit": true
+}

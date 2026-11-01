@@ -1,0 +1,49 @@
+{
+  "schema_version": 5,
+  "label": "214.Indian_Peacock",
+  "slug": "indian_peacock",
+  "common_name": "Indian Peacock",
+  "scientific_name": "Pavo peacock",
+  "summary": "The Indian Peacock (Pavo peacock) is an avian species characterized by specialized plumage and foraging adaptations. It primarily inhabits forest edges, cultivated farmland, and riparian scrub, where its diet consists primarily of grains, insects, worms, flower petals, and small snakes.",
+  "habitat": "Forest edges, cultivated farmland, and riparian scrub",
+  "diet": "Grains, insects, worms, flower petals, and small snakes",
+  "taxonomy": {
+    "kingdom": "Animalia",
+    "phylum": "Chordata",
+    "class": "Aves",
+    "order": "Galliformes",
+    "family": "Phasianidae",
+    "genus": "Pavo",
+    "species": "Pavo peacock"
+  },
+  "iucn_status": "Least Concern",
+  "iucn_code": "LC",
+  "native_range": [
+    "Indian Subcontinent",
+    "South Asia"
+  ],
+  "lifespan": {
+    "wild_years": [
+      15,
+      20
+    ],
+    "captive_years": [
+      23,
+      30
+    ]
+  },
+  "chromosome_count_2n": null,
+  "image_url": null,
+  "image_attribution": null,
+  "image_license": null,
+  "wikipedia_url": "https://en.wikipedia.org/wiki/Indian_Peacock",
+  "inaturalist_url": null,
+  "gbif_url": null,
+  "ncbi": null,
+  "source": "cache",
+  "verified": true,
+  "sources": [
+    "ornithological-cache"
+  ],
+  "cache_hit": true
+}

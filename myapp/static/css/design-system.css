@@ -1,0 +1,262 @@
+/* ==============================================================================
+   FEATHERED INSIGHTS - NATURAL METALLIC DESIGN SYSTEM
+   Tokens, Layouts, Micro-animations & Glassmorphism
+   ============================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@500;600;700;800&display=swap');
+
+:root {
+  /* Surfaces & Backgrounds */
+  --bg-deep-forest:       hsl(150, 20%, 8%);
+  --bg-card-glass:        rgba(20, 36, 26, 0.75);
+  --bg-card-glass-hover:  rgba(26, 46, 34, 0.88);
+  --bg-surface-elevated:  hsl(152, 22%, 12%);
+  --bg-input-field:       rgba(11, 20, 15, 0.85);
+
+  /* Metallic Accents */
+  --accent-copper:        hsl(28, 65%, 45%);
+  --accent-copper-hover:  hsl(28, 75%, 52%);
+  --accent-copper-glow:   rgba(189, 99, 40, 0.35);
+  --accent-gold:          hsl(43, 70%, 52%);
+  --accent-gold-soft:     rgba(226, 176, 39, 0.18);
+  --accent-teal:          hsl(175, 50%, 45%);
+  --accent-teal-glow:     rgba(57, 173, 158, 0.3);
+
+  /* Borders & Dividers */
+  --border-copper-subtle: rgba(189, 99, 40, 0.28);
+  --border-glass:         rgba(255, 255, 255, 0.08);
+  --border-active:        hsl(28, 75%, 55%);
+
+  /* Typography */
+  --text-ivory-primary:   hsl(40, 30%, 92%);
+  --text-sage-secondary:  hsl(140, 12%, 68%);
+  --text-muted:           hsl(140, 8%, 48%);
+
+  /* Status Colors */
+  --status-success:       hsl(142, 60%, 45%);
+  --status-warning:       hsl(38, 92%, 50%);
+  --status-error:         hsl(0, 68%, 52%);
+
+  /* Spatial & Effects */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-full: 9999px;
+
+  --shadow-glass:         0 8px 32px 0 rgba(0, 0, 0, 0.45);
+  --shadow-metallic-glow: 0 0 24px -4px var(--accent-copper-glow);
+  --backdrop-blur:        blur(16px);
+}
+
+/* Base Resets */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--bg-deep-forest);
+  background-image: 
+    radial-gradient(circle at 15% 20%, rgba(57, 173, 158, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 85% 75%, rgba(189, 99, 40, 0.08) 0%, transparent 40%);
+  color: var(--text-ivory-primary);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Typography Hierarchy */
+h1, h2, h3, h4, .brand-title {
+  font-family: 'Outfit', sans-serif;
+  color: var(--text-ivory-primary);
+  letter-spacing: -0.02em;
+}
+
+code, .mono-tag {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Glassmorphism Navigation Bar */
+.navbar-glass {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--bg-card-glass);
+  backdrop-filter: var(--backdrop-blur);
+  -webkit-backdrop-filter: var(--backdrop-blur);
+  border-bottom: 1px solid var(--border-glass);
+  padding: 0.85rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+}
+
+.brand-icon {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, var(--accent-copper), var(--accent-gold));
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-metallic-glow);
+}
+
+.brand-icon svg {
+  width: 20px;
+  height: 20px;
+  fill: #fff;
+}
+
+.brand-name {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--text-ivory-primary);
+}
+
+.brand-badge {
+  font-size: 0.7rem;
+  font-family: 'JetBrains Mono', monospace;
+  background: var(--accent-gold-soft);
+  color: var(--accent-gold);
+  border: 1px solid rgba(226, 176, 39, 0.3);
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--radius-full);
+  margin-left: 0.5rem;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  list-style: none;
+}
+
+.nav-link {
+  color: var(--text-sage-secondary);
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: color 0.2s ease, transform 0.2s ease;
+  padding: 0.4rem 0.8rem;
+  border-radius: var(--radius-sm);
+}
+
+.nav-link:hover, .nav-link.active {
+  color: var(--accent-gold);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* Main Container */
+.main-wrapper {
+  flex: 1;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem;
+}
+
+/* Glass Card Component */
+.glass-card {
+  background: var(--bg-card-glass);
+  backdrop-filter: var(--backdrop-blur);
+  -webkit-backdrop-filter: var(--backdrop-blur);
+  border: 1px solid var(--border-copper-subtle);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  box-shadow: var(--shadow-glass);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.glass-card:hover {
+  border-color: rgba(189, 99, 40, 0.45);
+}
+
+/* Buttons */
+.btn-metallic {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, var(--accent-copper), hsl(28, 60%, 38%));
+  color: var(--text-ivory-primary);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-md);
+  padding: 0.85rem 1.8rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--shadow-metallic-glow);
+  transition: all 0.25s ease;
+  text-decoration: none;
+}
+
+.btn-metallic:hover {
+  background: linear-gradient(135deg, var(--accent-copper-hover), var(--accent-copper));
+  transform: translateY(-2px);
+  box-shadow: 0 0 30px 0 var(--accent-copper-glow);
+}
+
+/* Footer */
+.footer-glass {
+  background: rgba(11, 20, 14, 0.9);
+  border-top: 1px solid var(--border-glass);
+  padding: 1.5rem 2rem;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-full);
+  background: rgba(57, 173, 158, 0.12);
+  border: 1px solid rgba(57, 173, 158, 0.3);
+  color: var(--accent-teal);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-teal);
+  box-shadow: 0 0 6px var(--accent-teal);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .navbar-glass {
+    padding: 0.75rem 1rem;
+  }
+  .nav-links {
+    gap: 0.5rem;
+  }
+  .main-wrapper {
+    padding: 1.5rem 1rem;
+  }
+  .footer-glass {
+    flex-direction: column;
+    text-align: center;
+  }
+}

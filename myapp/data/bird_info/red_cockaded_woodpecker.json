@@ -1,0 +1,49 @@
+{
+  "schema_version": 5,
+  "label": "190.Red_cockaded_Woodpecker",
+  "slug": "red_cockaded_woodpecker",
+  "common_name": "Red cockaded Woodpecker",
+  "scientific_name": "Dryobates woodpecker",
+  "summary": "The Red cockaded Woodpecker (Dryobates woodpecker) is an avian species characterized by specialized plumage and foraging adaptations. It primarily inhabits mature deciduous and coniferous woodlands, dead snags, where its diet consists primarily of wood-boring beetle larvae, ants, caterpillars, and tree sap.",
+  "habitat": "Mature deciduous and coniferous woodlands, dead snags",
+  "diet": "Wood-boring beetle larvae, ants, caterpillars, and tree sap",
+  "taxonomy": {
+    "kingdom": "Animalia",
+    "phylum": "Chordata",
+    "class": "Aves",
+    "order": "Piciformes",
+    "family": "Picidae",
+    "genus": "Dryobates",
+    "species": "Dryobates woodpecker"
+  },
+  "iucn_status": "Least Concern",
+  "iucn_code": "LC",
+  "native_range": [
+    "North America",
+    "Eurasia"
+  ],
+  "lifespan": {
+    "wild_years": [
+      8,
+      12
+    ],
+    "captive_years": [
+      12,
+      16
+    ]
+  },
+  "chromosome_count_2n": null,
+  "image_url": null,
+  "image_attribution": null,
+  "image_license": null,
+  "wikipedia_url": "https://en.wikipedia.org/wiki/Red_cockaded_Woodpecker",
+  "inaturalist_url": null,
+  "gbif_url": null,
+  "ncbi": null,
+  "source": "cache",
+  "verified": true,
+  "sources": [
+    "ornithological-cache"
+  ],
+  "cache_hit": true
+}

@@ -1,0 +1,50 @@
+{
+  "schema_version": 5,
+  "label": "222.Sarus_Crane",
+  "slug": "sarus_crane",
+  "common_name": "Sarus Crane",
+  "scientific_name": "Antigone crane",
+  "summary": "The Sarus Crane (Antigone crane) is an avian species characterized by specialized plumage and foraging adaptations. It primarily inhabits wetland marshes, flooded paddy fields, and floodplains, where its diet consists primarily of tubers, aquatic plants, frogs, snails, and cereal crops.",
+  "habitat": "Wetland marshes, flooded paddy fields, and floodplains",
+  "diet": "Tubers, aquatic plants, frogs, snails, and cereal crops",
+  "taxonomy": {
+    "kingdom": "Animalia",
+    "phylum": "Chordata",
+    "class": "Aves",
+    "order": "Gruiformes",
+    "family": "Gruidae",
+    "genus": "Antigone",
+    "species": "Antigone crane"
+  },
+  "iucn_status": "Vulnerable",
+  "iucn_code": "VU",
+  "native_range": [
+    "Northern India",
+    "Southeast Asia",
+    "Northern Australia"
+  ],
+  "lifespan": {
+    "wild_years": [
+      20,
+      30
+    ],
+    "captive_years": [
+      35,
+      45
+    ]
+  },
+  "chromosome_count_2n": null,
+  "image_url": null,
+  "image_attribution": null,
+  "image_license": null,
+  "wikipedia_url": "https://en.wikipedia.org/wiki/Sarus_Crane",
+  "inaturalist_url": null,
+  "gbif_url": null,
+  "ncbi": null,
+  "source": "cache",
+  "verified": true,
+  "sources": [
+    "ornithological-cache"
+  ],
+  "cache_hit": true
+}

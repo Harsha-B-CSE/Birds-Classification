@@ -1,205 +1,133 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Bird Classification - Feathered Insights</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            text-align: center;
-            background: linear-gradient(135deg, #87CEEB, #ADD8E6);
-            margin: 0;
-            padding: 50px;
-            animation: fadeIn 1s ease-in-out;
-            background-size: 400% 400%;
-            animation: gradientAnimation 10s ease infinite;
-            overflow: hidden;
-        }
+{% extends 'myapp/base.html' %}
+{% load static %}
 
-        @keyframes gradientAnimation {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
+{% block title %}Identify Species - Feathered Insights{% endblock %}
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/predict.css' %}">
+<link rel="stylesheet" href="{% static 'css/results.css' %}">
+{% endblock %}
 
-        h2 {
-            color: #333;
-            margin-bottom: 30px;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-            font-size: 2.5em;
-        }
+{% block content %}
+<section class="hero-section">
+    <h1 class="hero-title">Avian Vision &amp; Intelligence</h1>
+    <p class="hero-subtitle">Upload field photographs to identify bird species with our Swin Vision Transformer and 3-Check Out-of-Distribution verification cascade.</p>
+</section>
 
-        input[type="file"] {
-            margin: 20px 0;
-            padding: 15px;
-            border: 2px dashed #bbb;
-            border-radius: 15px;
-            background-color: #f9f9f9;
-            transition: border-color 0.3s;
-            font-size: 1em;
-        }
+<div class="dashboard-grid"
+     id="predict-dashboard"
+     data-predict-url="{% url 'predict' %}"
+     data-species-url="{% url 'species_profile' %}">
 
-        input[type="file"]:hover {
-            border-color: #6495ED;
-        }
+    <form id="upload-form" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="dropzone-container" id="upload-dropzone" role="button" tabindex="0" aria-label="Upload a bird photograph">
+            <input type="file" id="bird-file-input" name="image" accept="image/jpeg,image/png,image/webp" hidden>
 
-        button {
-            padding: 15px 30px;
-            background-color: #6495ED;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            margin-top: 20px;
-            transition: transform 0.3s, background-color 0.3s;
-            font-size: 1.1em;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
+            <div class="dropzone-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="17 8 12 3 7 8"></polyline>
+                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+            </div>
+            <div class="dropzone-prompt">Drag &amp; drop a bird photo here, or click to browse</div>
+            <div class="dropzone-sub">JPEG, PNG, or WEBP - maximum 15 MB</div>
 
-        button:hover {
-            transform: scale(1.05);
-            background-color: #4682B4;
-        }
+            <div class="preview-box" id="preview-box">
+                <img id="image-preview" class="preview-img" alt="Selected specimen preview">
+                <div class="scan-beam" id="scan-beam"></div>
+            </div>
+        </div>
+    </form>
 
-        #loader {
-            display: none;
-            margin: 30px auto;
-            border: 5px solid #f3f3f3;
-            border-radius: 50%;
-            border-top: 5px solid #6495ED;
-            width: 50px;
-            height: 50px;
-            animation: spin 1.2s linear infinite;
-        }
+    <div class="pipeline-status-card" id="pipeline-status-card" aria-live="polite">
+        <div class="pipeline-step" id="step-detector" data-state="pending">
+            <span class="step-dot"></span>
+            <div>
+                <span class="step-label">Check 1 - Bird presence verification</span>
+                <span class="step-detail" id="step-detector-detail">Queued</span>
+            </div>
+        </div>
+        <div class="pipeline-step" id="step-classifier" data-state="pending">
+            <span class="step-dot"></span>
+            <div>
+                <span class="step-label">Check 2 - Plumage feature extraction</span>
+                <span class="step-detail" id="step-classifier-detail">Queued</span>
+            </div>
+        </div>
+        <div class="pipeline-step" id="step-ood" data-state="pending">
+            <span class="step-dot"></span>
+            <div>
+                <span class="step-label">Check 3 - Energy-based OOD gate</span>
+                <span class="step-detail" id="step-ood-detail">Queued</span>
+            </div>
+        </div>
+    </div>
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+    <div class="error-card" id="error-card" role="alert"></div>
 
-        #result {
-            margin-top: 30px;
-            font-size: 1.2em;
-            color: #333;
-            background-color: rgba(255, 255, 255, 0.8);
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            display: inline-block;
-        }
+    <article class="glass-card result-card" id="result-card" aria-live="polite">
+        <header class="species-hero-header">
+            <div>
+                <h2 class="species-common" id="result-species-name">Species</h2>
+                <div class="species-sub" id="result-scientific-name">Resolving taxonomy...</div>
+            </div>
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                <span class="confidence-tag" id="result-confidence">0% match</span>
+                <span class="iucn-tag" id="result-iucn" hidden></span>
+            </div>
+        </header>
 
-        #preview {
-            margin: 30px auto;
-            max-width: 400px;
-            max-height: 400px;
-            border-radius: 15px;
-            border: 3px solid #ddd;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
+        <section class="top5-container" aria-labelledby="top5-heading">
+            <h3 class="top5-title" id="top5-heading">Top-5 species distribution</h3>
+            <div id="top5-rows-container"></div>
+        </section>
 
-        .bird {
-            position: absolute;
-            width: 60px;
-            height: 60px;
-            background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Bird_icon.svg/1200px-Bird_icon.svg.png');
-            background-size: contain;
-            opacity: 0.8;
-            animation: fly 15s linear infinite;
-        }
+        <section class="dossier" aria-labelledby="dossier-heading">
+            <h3 class="dossier-title" id="dossier-heading">Scientific dossier</h3>
+            <div class="dossier-source-row">
+                <span class="dossier-source-badge" id="dossier-source" hidden></span>
+                <span class="dossier-disclaimer" id="dossier-disclaimer" hidden></span>
+            </div>
+            <div class="dossier-empty" id="dossier-loading">Fetching the scientific dossier...</div>
+            <div class="dossier-empty" id="dossier-empty" hidden>No enrichment data is available for this species right now.</div>
+            <div class="dossier-layout" id="dossier-content" hidden>
+                <figure>
+                    <img class="dossier-photo" id="dossier-photo" alt="" hidden>
+                    <figcaption class="dossier-caption" id="dossier-photo-caption" hidden></figcaption>
+                </figure>
+                <div>
+                    <p class="dossier-summary" id="dossier-summary"></p>
+                    <p class="dossier-habitat" id="dossier-habitat" hidden></p>
+                    <div class="chip-row" id="dossier-taxonomy"></div>
+                    <div class="chip-row" id="dossier-range"></div>
+                    <div class="chip-row" id="dossier-biology"></div>
+                    <div class="lifespan-block" id="lifespan-block" hidden>
+                        <h4 class="dossier-subtitle">Lifespan: wild vs captive</h4>
+                        <div class="lifespan-canvas-wrap">
+                            <canvas id="lifespan-chart" aria-label="Wild and captive lifespan ranges" role="img"></canvas>
+                        </div>
+                    </div>
+                    <div class="dossier-links" id="dossier-links"></div>
+                </div>
+            </div>
+        </section>
 
-        @keyframes fly {
-            0% { transform: translate(-100vw, 0); }
-            100% { transform: translate(100vw, 0); }
-        }
-    </style>
-</head>
-<body>
-    <div class="bird" style="top: 15%; animation-duration: 18s;"></div>
-    <div class="bird" style="top: 35%; animation-duration: 12s;"></div>
-    <div class="bird" style="top: 55%; animation-duration: 20s;"></div>
-    <div class="bird" style="top: 75%; animation-duration: 10s;"></div>
+        <div class="card-actions">
+            <button type="button" class="btn-metallic" id="btn-identify-another">Identify another specimen</button>
+            <a href="{% url 'history' %}" class="btn-metallic" id="btn-open-history">View field log</a>
+        </div>
+    </article>
+</div>
 
-    <h2>  Bird Species Identification with Our Model </h2>
-    <input type="file" id="imageInput" accept="image/*" onchange="previewImage()">
-    <br>
-    <img id="preview" alt="Image Preview" style="display: none;">
-    <button onclick="predict()">Identify Bird</button>
-    <div id="loader"></div>
-    <div id="result"></div>
+<noscript>
+    <p class="error-card" style="display:block;">JavaScript is required to run the identification pipeline.</p>
+</noscript>
+{% endblock %}
 
-    <script>
-        function getCookie(name) {
-            let cookieValue = null;
-            if (document.cookie && document.cookie !== "") {
-                const cookies = document.cookie.split(";");
-                for (let i = 0; i < cookies.length; i++) {
-                    const cookie = cookies[i].trim();
-                    if (cookie.substring(0, name.length + 1) === (name + "=")) {
-                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                        break;
-                    }
-                }
-            }
-            return cookieValue;
-        }
-
-        function previewImage() {
-            const file = document.getElementById("imageInput").files[0];
-            const preview = document.getElementById("preview");
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    preview.src = e.target.result;
-                    preview.style.display = "block";
-                }
-                reader.readAsDataURL(file);
-            }
-        }
-
-        function predict() {
-            const imageInput = document.getElementById("imageInput").files[0];
-            const resultDiv = document.getElementById("result");
-            const loader = document.getElementById("loader");
-
-            if (!imageInput) {
-                resultDiv.innerHTML = "Please select an image!";
-                return;
-            }
-
-            const formData = new FormData();
-            formData.append("image", imageInput);
-
-            loader.style.display = "block";
-            resultDiv.innerHTML = "";
-
-            fetch("/predict/", {
-                method: "POST",
-                headers: {
-                    "X-CSRFToken": getCookie("csrftoken")
-                },
-                body: formData,
-            })
-            .then(response => response.json())
-            .then(data => {
-                loader.style.display = "none";
-                if (data.error) {
-                    resultDiv.innerHTML = `Error: ${data.error}`;
-                } else {
-                    resultDiv.innerHTML = `
-                        <strong>Predicted Class:</strong> ${data.class}<br>
-                        <strong>Probability:</strong> ${(data.probability * 100).toFixed(2)}%
-                    `;
-                }
-            })
-            .catch(error => {
-                loader.style.display = "none";
-                resultDiv.innerHTML = `Error: ${error.message}`;
-            });
-        }
-    </script>
-</body>
-</html>
+{% block extra_scripts %}
+<script src="{% static 'js/ui.js' %}" defer></script>
+<script src="{% static 'js/dossier.js' %}" defer></script>
+<script src="{% static 'js/predict.js' %}" defer></script>
+{% endblock %}

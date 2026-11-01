@@ -11,14 +11,64 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-import os
+# Load environment configuration (.env)
+try:
+    from dotenv import load_dotenv
+    load_dotenv(BASE_DIR / ".env")
+except ImportError:
+    pass
 
-MEDIA_URL = "/uploads/"  # Change URL to match your existing folder
-MEDIA_ROOT = "D:/Birds/Bird_class/uploads/"  # Use your actual upload directory
+# ==============================================================================
+# DEPLOYMENT MODE SWITCH: Local vs. Firebase
+# Flipped via .env (USE_FIREBASE=True/False) or environment variables
+# ==============================================================================
+USE_FIREBASE = os.getenv("USE_FIREBASE", "False").lower() in ("true", "1", "yes")
+
+MEDIA_URL = "/uploads/"
+MEDIA_ROOT = BASE_DIR / "uploads"
+
+# Local NVMe Cache Configuration (Workstation budget: 5.0 GB max)
+DEFAULT_CACHE_DIR = Path("D:/BirdsCache")
+CACHE_DIR = DEFAULT_CACHE_DIR if DEFAULT_CACHE_DIR.drive and Path(DEFAULT_CACHE_DIR.drive + "/").exists() else BASE_DIR / ".cache"
+MODELS_CACHE_DIR = CACHE_DIR / "models"
+BIRD_INFO_CACHE_DIR = CACHE_DIR / "bird_info"
+PRED_CACHE_DIR = CACHE_DIR / "predictions"
+LOGS_CACHE_DIR = CACHE_DIR / "logs"
+MAX_CACHE_SIZE_MB = 5000  # 5.0 GB total budget
+
+# ==============================================================================
+# 3-CHECK INFERENCE GATE THRESHOLDS
+# Calibrated on 300 held-out CUB-200 test images vs. 30 non-bird photographs:
+# confidence floor alone rejected 100% of OOD samples, so the energy gate is
+# relaxed to the in-distribution p95 instead of rejecting valid field photos.
+# ==============================================================================
+BIRD_PRESENCE_THRESHOLD = float(os.getenv("BIRD_PRESENCE_THRESHOLD", "0.60"))
+OOD_ENERGY_THRESHOLD = float(os.getenv("OOD_ENERGY_THRESHOLD", "-3.90"))
+OOD_CONFIDENCE_FLOOR = float(os.getenv("OOD_CONFIDENCE_FLOOR", "0.40"))
+
+# ==============================================================================
+# LOCAL SPECIES DOSSIER MODEL
+# Local model is the default enrichment source so dossiers work offline.
+# Set SPECIES_INFO_MODE=external to use the legacy Wikipedia/GBIF path only.
+# ==============================================================================
+SPECIES_INFO_MODE = os.getenv("SPECIES_INFO_MODE", "local").lower()
+SPECIES_EXTERNAL_ENRICHMENT = os.getenv(
+    "SPECIES_EXTERNAL_ENRICHMENT", "False"
+).lower() in ("true", "1", "yes")
+LOCAL_LLM_ENABLED = SPECIES_INFO_MODE in ("local", "hybrid")
+_local_model_path = Path(
+    os.getenv("LOCAL_LLM_MODEL_PATH", str(BASE_DIR / "models" / "qwen2.5-1.5b-instruct"))
+)
+LOCAL_LLM_MODEL_PATH = (
+    _local_model_path if _local_model_path.is_absolute() else BASE_DIR / _local_model_path
+)
+LOCAL_LLM_DEVICE = os.getenv("LOCAL_LLM_DEVICE", "auto")
+LOCAL_LLM_MAX_NEW_TOKENS = int(os.getenv("LOCAL_LLM_MAX_NEW_TOKENS", "220"))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -67,6 +117,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "myapp.context_processors.app_mode",
             ],
         },
     },
@@ -133,3 +184,33 @@ LOGOUT_REDIRECT_URL = "/login/"  # Redirect to login after logout
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# ==============================================================================
+# FIREBASE CONFIGURATION & HYBRID MODE SWITCH
+# ==============================================================================
+_cred_env = os.getenv("FIREBASE_CREDENTIALS")
+if _cred_env:
+    _cred_candidate = Path(_cred_env)
+    FIREBASE_CRED_PATH = _cred_candidate if _cred_candidate.is_absolute() else BASE_DIR / _cred_candidate
+else:
+    FIREBASE_CRED_PATH = BASE_DIR / "serviceAccountKey.json"
+FIREBASE_STORAGE_BUCKET = os.getenv("FIREBASE_STORAGE_BUCKET", "birds-classification-4511c.appspot.com")
+FIREBASE_ENABLED = USE_FIREBASE
+
+if FIREBASE_ENABLED:
+    try:
+        import firebase_admin
+        from firebase_admin import credentials, firestore, storage as fb_storage
+
+        if not firebase_admin._apps and FIREBASE_CRED_PATH.exists():
+            cred = credentials.Certificate(str(FIREBASE_CRED_PATH))
+            firebase_admin.initialize_app(cred, {
+                "storageBucket": FIREBASE_STORAGE_BUCKET,
+            })
+            print(f"[OK] Mode: Firebase Cloud (Connected via {FIREBASE_CRED_PATH.name})")
+        elif not FIREBASE_CRED_PATH.exists():
+            print(f"[WARNING] Firebase enabled but credentials not found at {FIREBASE_CRED_PATH}")
+    except Exception as e:
+        print(f"[WARNING] Firebase initialization skipped: {e}")
+else:
+    print("[OK] Mode: Local Workstation (Offline SQLite & Local Cache)")

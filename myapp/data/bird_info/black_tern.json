@@ -1,0 +1,50 @@
+{
+  "schema_version": 5,
+  "label": "142.Black_Tern",
+  "slug": "black_tern",
+  "common_name": "Black Tern",
+  "scientific_name": "Sterna tern",
+  "summary": "The Black Tern (Sterna tern) is an avian species characterized by specialized plumage and foraging adaptations. It primarily inhabits coastal beaches, barrier islands, and offshore marine waters, where its diet consists primarily of small forage fish, sand lance, anchovies, and marine worms.",
+  "habitat": "Coastal beaches, barrier islands, and offshore marine waters",
+  "diet": "Small forage fish, sand lance, anchovies, and marine worms",
+  "taxonomy": {
+    "kingdom": "Animalia",
+    "phylum": "Chordata",
+    "class": "Aves",
+    "order": "Charadriiformes",
+    "family": "Laridae",
+    "genus": "Sterna",
+    "species": "Sterna tern"
+  },
+  "iucn_status": "Least Concern",
+  "iucn_code": "LC",
+  "native_range": [
+    "Atlantic Ocean",
+    "Pacific Ocean",
+    "Worldwide Coastlines"
+  ],
+  "lifespan": {
+    "wild_years": [
+      18,
+      26
+    ],
+    "captive_years": [
+      20,
+      28
+    ]
+  },
+  "chromosome_count_2n": null,
+  "image_url": null,
+  "image_attribution": null,
+  "image_license": null,
+  "wikipedia_url": "https://en.wikipedia.org/wiki/Black_Tern",
+  "inaturalist_url": null,
+  "gbif_url": null,
+  "ncbi": null,
+  "source": "cache",
+  "verified": true,
+  "sources": [
+    "ornithological-cache"
+  ],
+  "cache_hit": true
+}

@@ -1,0 +1,56 @@
+{% extends 'myapp/base.html' %}
+{% load static %}
+
+{% block title %}Field Log - Feathered Insights{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/history.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="hero-section">
+    <h1 class="hero-title">Your Field Log</h1>
+    <p class="hero-subtitle">Every confident identification is stored against this device, without an account. Review your sightings, confidence levels, and inference times.</p>
+</section>
+
+<div id="history-root"
+     data-history-api="{% url 'history_api' %}"
+     data-predict-url="{% url 'predict' %}">
+    <form hidden>{% csrf_token %}</form>
+
+    <div class="stats-grid" id="history-stats" hidden>
+        <div class="glass-card stat-card">
+            <span class="stat-value" id="stat-total">0</span>
+            <span class="stat-label">Identifications</span>
+        </div>
+        <div class="glass-card stat-card">
+            <span class="stat-value" id="stat-species">0</span>
+            <span class="stat-label">Unique species</span>
+        </div>
+        <div class="glass-card stat-card">
+            <span class="stat-value" id="stat-confidence">0%</span>
+            <span class="stat-label">Average confidence</span>
+        </div>
+    </div>
+
+    <div class="history-toolbar">
+        <span class="history-count" id="history-count">Loading sightings...</span>
+        <button type="button" class="btn-quiet" id="btn-clear-history" hidden>Clear field log</button>
+    </div>
+
+    <div class="history-list" id="history-list"></div>
+
+    <div class="glass-card empty-state" id="history-empty" hidden>
+        <h2>No sightings recorded yet</h2>
+        <p>Identify a bird and it will appear here automatically.</p>
+        <a class="btn-metallic" href="{% url 'predict' %}" id="btn-start-identifying">Identify a bird</a>
+    </div>
+
+    <div class="error-card" id="history-error" role="alert"></div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{% static 'js/ui.js' %}" defer></script>
+<script src="{% static 'js/history.js' %}" defer></script>
+{% endblock %}

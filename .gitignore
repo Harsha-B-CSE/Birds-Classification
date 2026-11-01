@@ -1,4 +1,4 @@
-﻿# Python
+# Python
 __pycache__/
 *.py[cod]
 *.pyo
@@ -31,6 +31,9 @@ staticfiles/
 
 # Dataset (large)
 CUB_200_2011/
+Indian_Birds_25/
+training_output/
+models/
 
 # Jupyter Notebooks checkpoints
 .ipynb_checkpoints/
@@ -48,6 +51,16 @@ Thumbs.db
 # Uploads folder
 uploads/
 
-# Environment variables
+# Environment variables & secrets
 .env
 *.env
+*firebase-adminsdk*.json
+*firebase*.json
+*adminsdk*.json
+*serviceAccount*.json
+serviceAccountKey*.json
+firebase_credentials*.json
+credentials*.json
+secrets*.json
+*.key
+*.pem

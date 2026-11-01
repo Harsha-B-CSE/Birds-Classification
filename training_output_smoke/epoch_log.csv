@@ -1,0 +1,2 @@
+epoch,phase,train_loss,train_acc,val_loss,val_acc,lr,seconds
+1,light,4.81182,0.15000,4.02829,0.15000,0.0000400,3.1

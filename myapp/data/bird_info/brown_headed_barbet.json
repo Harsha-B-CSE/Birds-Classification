@@ -1,0 +1,49 @@
+{
+  "schema_version": 5,
+  "label": "202.Brown_Headed_Barbet",
+  "slug": "brown_headed_barbet",
+  "common_name": "Brown Headed Barbet",
+  "scientific_name": "Psilopogon barbet",
+  "summary": "The Brown Headed Barbet (Psilopogon barbet) is an avian species characterized by specialized plumage and foraging adaptations. It primarily inhabits tropical moist lowland forests, city gardens, and groves, where its diet consists primarily of wild figs, drupes, berries, and flower buds.",
+  "habitat": "Tropical moist lowland forests, city gardens, and groves",
+  "diet": "Wild figs, drupes, berries, and flower buds",
+  "taxonomy": {
+    "kingdom": "Animalia",
+    "phylum": "Chordata",
+    "class": "Aves",
+    "order": "Piciformes",
+    "family": "Megalaimidae",
+    "genus": "Psilopogon",
+    "species": "Psilopogon barbet"
+  },
+  "iucn_status": "Least Concern",
+  "iucn_code": "LC",
+  "native_range": [
+    "Indian Subcontinent",
+    "Indochina"
+  ],
+  "lifespan": {
+    "wild_years": [
+      8,
+      12
+    ],
+    "captive_years": [
+      14,
+      18
+    ]
+  },
+  "chromosome_count_2n": null,
+  "image_url": null,
+  "image_attribution": null,
+  "image_license": null,
+  "wikipedia_url": "https://en.wikipedia.org/wiki/Brown_Headed_Barbet",
+  "inaturalist_url": null,
+  "gbif_url": null,
+  "ncbi": null,
+  "source": "cache",
+  "verified": true,
+  "sources": [
+    "ornithological-cache"
+  ],
+  "cache_hit": true
+}

@@ -1,0 +1,50 @@
+{
+  "schema_version": 5,
+  "label": "181.Worm_eating_Warbler",
+  "slug": "worm_eating_warbler",
+  "common_name": "Worm eating Warbler",
+  "scientific_name": "Setophaga warbler",
+  "summary": "The Worm eating Warbler (Setophaga warbler) is an avian species characterized by specialized plumage and foraging adaptations. It primarily inhabits temperate mixed forests, boreal woodlands, and scrub, where its diet consists primarily of caterpillars, flying insects, aphids, and spiders.",
+  "habitat": "Temperate mixed forests, boreal woodlands, and scrub",
+  "diet": "Caterpillars, flying insects, aphids, and spiders",
+  "taxonomy": {
+    "kingdom": "Animalia",
+    "phylum": "Chordata",
+    "class": "Aves",
+    "order": "Passeriformes",
+    "family": "Parulidae",
+    "genus": "Setophaga",
+    "species": "Setophaga warbler"
+  },
+  "iucn_status": "Least Concern",
+  "iucn_code": "LC",
+  "native_range": [
+    "North America",
+    "Central America",
+    "South America"
+  ],
+  "lifespan": {
+    "wild_years": [
+      5,
+      9
+    ],
+    "captive_years": [
+      8,
+      12
+    ]
+  },
+  "chromosome_count_2n": null,
+  "image_url": null,
+  "image_attribution": null,
+  "image_license": null,
+  "wikipedia_url": "https://en.wikipedia.org/wiki/Worm_eating_Warbler",
+  "inaturalist_url": null,
+  "gbif_url": null,
+  "ncbi": null,
+  "source": "cache",
+  "verified": true,
+  "sources": [
+    "ornithological-cache"
+  ],
+  "cache_hit": true
+}

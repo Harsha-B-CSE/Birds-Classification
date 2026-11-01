@@ -1,7 +1,24 @@
-﻿Django>=4.2
+﻿# Core Framework
+Django>=4.2
+# ML / Deep Learning
 torch>=2.0.0
 torchvision>=0.15.0
 timm>=0.9.0
+onnxruntime>=1.16.0
+transformers>=4.45.0
+huggingface_hub>=0.25.0
+kagglehub>=0.3.0
+# Data & Image Processing
 Pillow>=10.0.0
 numpy>=1.24.0
 pandas>=2.0.0
+# Firebase / Cloud
+firebase-admin>=6.0.0
+python-dotenv>=1.0.0
+# Utilities
+tqdm>=4.66.0
+pyyaml>=6.0
+certifi>=2024.0.0
+# Visualization (for training)
+matplotlib>=3.7.0
+seaborn>=0.12.0

@@ -1,0 +1,51 @@
+{
+  "schema_version": 5,
+  "label": "005.Crested_Auklet",
+  "slug": "crested_auklet",
+  "common_name": "Crested Auklet",
+  "scientific_name": "Aethia auklet",
+  "summary": "The Crested Auklet (Aethia auklet) is an avian species characterized by specialized plumage and foraging adaptations. It primarily inhabits subarctic rocky islands and coastal oceanic waters, where its diet consists primarily of euphausiids, copepods, and small marine invertebrates.",
+  "habitat": "Subarctic rocky islands and coastal oceanic waters",
+  "diet": "Euphausiids, copepods, and small marine invertebrates",
+  "taxonomy": {
+    "kingdom": "Animalia",
+    "phylum": "Chordata",
+    "class": "Aves",
+    "order": "Charadriiformes",
+    "family": "Alcidae",
+    "genus": "Aethia",
+    "species": "Aethia auklet"
+  },
+  "iucn_status": "Least Concern",
+  "iucn_code": "LC",
+  "native_range": [
+    "North Pacific",
+    "Bering Sea",
+    "Alaska",
+    "Russia"
+  ],
+  "lifespan": {
+    "wild_years": [
+      10,
+      16
+    ],
+    "captive_years": [
+      14,
+      20
+    ]
+  },
+  "chromosome_count_2n": null,
+  "image_url": null,
+  "image_attribution": null,
+  "image_license": null,
+  "wikipedia_url": "https://en.wikipedia.org/wiki/Crested_Auklet",
+  "inaturalist_url": null,
+  "gbif_url": null,
+  "ncbi": null,
+  "source": "cache",
+  "verified": true,
+  "sources": [
+    "ornithological-cache"
+  ],
+  "cache_hit": true
+}
