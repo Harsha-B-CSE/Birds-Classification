@@ -67,7 +67,7 @@ Birds-classification/
 - **Backbone**: Swin Tiny Transformer (`swin_tiny_patch4_window7_224`) via `timm`
 - **Input Resolution**: 224×224 pixels
 - **Patch Size**: 4×4, Window Size: 7
-- **Output Classes**: 224 (200 CUB-200 + 25 Indian Birds)
+- **Output Classes**: 224 (199 CUB-200 + 25 Indian Birds)
 - **Dropout**: 0.3 (applied before classification head)
 - **Framework**: PyTorch + ONNX Runtime for deployment
 
