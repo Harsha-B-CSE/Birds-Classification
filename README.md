@@ -44,7 +44,7 @@ The model was trained on the **CUB-200-2011 (Caltech-UCSD Birds 200)** dataset. 
 👉 [CUB-200-2011 Dataset on Kaggle](https://www.kaggle.com/datasets/veeralakrishna/200-bird-species-with-11788-images)
 
 📥 **Indian Birds Dataset:**
-👉 [Indian_Birds_25 on Kaggle](https://www.kaggle.com/datasets/veeralakrishna/indian-birds-25-species)
+👉 [Indian_Birds_25 on Kaggle](https://www.kaggle.com/datasets/ichhadhari/indian-birds)
 
 After downloading, place the extracted folders as:
 ```
