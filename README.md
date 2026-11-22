@@ -61,6 +61,74 @@ Birds-classification/
 
 ---
 
+## 🧠 Model Architecture & Training Details
+
+### Model Architecture
+- **Backbone**: Swin Tiny Transformer (`swin_tiny_patch4_window7_224`) via `timm`
+- **Input Resolution**: 224×224 pixels
+- **Patch Size**: 4×4, Window Size: 7
+- **Output Classes**: 224 (200 CUB-200 + 24 Indian Birds)
+- **Dropout**: 0.3 (applied before classification head)
+- **Framework**: PyTorch + ONNX Runtime for deployment
+
+### Training Strategy: Two-Stage Transfer Learning
+
+#### Stage 1: Frozen Backbone (Epochs 1–5)
+- **Learning Rate**: 1e-3
+- **Optimizer**: AdamW (weight_decay=1e-4)
+- **Only classification head trained** (224-class Linear layer)
+- **Head initialization**: Truncated normal (std=0.02), zero bias
+- **Weight transfer**: First 200 weights copied from pre-trained CUB-200 head
+- **Loss**: CrossEntropy with label_smoothing=0.1
+
+#### Stage 2: Full Fine-Tuning (Epochs 6–30)
+- **Learning Rate**: 1e-4 with Cosine Annealing (T_max=25, eta_min=1e-6)
+- **Optimizer**: AdamW (weight_decay=1e-4)
+- **All layers unfrozen** — full model fine-tuned
+- **Augmentation**: Progressive (MixUp α=0.2 in middle epochs)
+
+### Hyperparameters Summary
+
+| Parameter | Value |
+|-----------|-------|
+| Total Epochs | 30 |
+| Warmup Epochs (Stage 1) | 5 |
+| Batch Size | 32 |
+| Stage 1 LR (Head only) | 1e-3 |
+| Stage 2 LR (Full model) | 1e-4 |
+| Weight Decay | 1e-4 |
+| Image Size | 224 |
+| Label Smoothing | 0.1 |
+| MixUp Alpha | 0.2 (selective epochs) |
+| Dropout | 0.3 |
+| Optimizer | AdamW |
+| Scheduler (Stage 2) | CosineAnnealingLR |
+| Mixed Precision | AMP (GradScaler) |
+
+### Data Pipeline
+- **Combined Manifest**: Merges CUB-200-2011 (200 classes) + Indian_Birds_25 (24 classes) → 224 total
+- **Class-Balanced Sampling**: WeightedRandomSampler ensures equal class representation per batch
+- **Train Transforms**: RandomResizedCrop, HorizontalFlip, ColorJitter, RandAugment, MixUp
+- **Eval Transforms**: Resize 256 → CenterCrop 224 → Normalize (ImageNet stats)
+
+### 3-Check Inference Pipeline
+The deployed model uses a cascaded verification for robust predictions:
+
+1. **Check 1 — Bird Presence Detector** (EfficientNet-B0): Filters non-bird images (threshold: 0.60)
+2. **Check 2 — Swin Transformer Classifier**: 224-class species prediction (ONNX Runtime, ~43ms CPU)
+3. **Check 3 — Energy-Based OOD Gate**: Helmholtz free energy scoring to reject unseen/out-of-distribution samples
+   - Energy threshold: -3.90
+   - Confidence floor: 0.40
+   - Temperature scaling: T=1.0
+
+### Performance Metrics
+- **Top-1 Accuracy**: 95.33% (on 300 held-out CUB-200 test images)
+- **Top-5 Accuracy**: 98.33%
+- **ONNX Runtime CPU Latency**: ~43 ms per inference
+- **PyTorch/ONNX Numerical Parity**: Max difference 2e-6
+
+---
+
 ## 🤖 Pre-trained Model
 
 The trained Swin Transformer model (swin_model_best.pth, ~105 MB) is **NOT included** in the repo.
