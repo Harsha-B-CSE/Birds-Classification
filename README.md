@@ -36,20 +36,26 @@ Birds-classification/
 
 ## 📦 Dataset
 
-The model was trained on the **CUB-200-2011 (Caltech-UCSD Birds 200)** dataset.
+The model was trained on the **CUB-200-2011 (Caltech-UCSD Birds 200)** dataset. Additionally, **Indian_Birds_25** dataset is used for regional bird species evaluation.
 
-> ⚠️ The dataset is **NOT included** in this repository due to its large size.
+> ⚠️ Datasets are **NOT included** in this repository due to their large size.
 
 📥 **Download from Kaggle:**
 👉 [CUB-200-2011 Dataset on Kaggle](https://www.kaggle.com/datasets/veeralakrishna/200-bird-species-with-11788-images)
 
-After downloading, place the extracted folder as:
+📥 **Indian Birds Dataset:**
+👉 [Indian_Birds_25 on Kaggle](https://www.kaggle.com/datasets/veeralakrishna/indian-birds-25-species)
+
+After downloading, place the extracted folders as:
 ```
 Birds-classification/
-└── CUB_200_2011/
+├── CUB_200_2011/
+│   ├── images/
+│   ├── classes.txt
+│   ├── image_class_labels.txt
+│   └── ...
+└── Indian_Birds_25/
     ├── images/
-    ├── classes.txt
-    ├── image_class_labels.txt
     └── ...
 ```
 
