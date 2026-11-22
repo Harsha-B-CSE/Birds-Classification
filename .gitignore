@@ -48,6 +48,10 @@ models/
 .DS_Store
 Thumbs.db
 
+# Markdown files
+*.md
+!README.md
+
 # Uploads folder
 uploads/
 
