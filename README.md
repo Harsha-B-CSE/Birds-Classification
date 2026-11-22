@@ -1,6 +1,6 @@
 ﻿# 🐦 Birds Classification - Feathered Insights
 
-A Django web application for identifying bird species using a **Swin Tiny Transformer** model trained on the **CUB-200-2011** dataset (200 bird species).
+A Django web application for identifying bird species using a **Swin Tiny Transformer** model trained on the **CUB-200-2011** dataset (200 bird species) and 25 Indian Birds.
 
 ---
 
