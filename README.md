@@ -67,7 +67,7 @@ Birds-classification/
 - **Backbone**: Swin Tiny Transformer (`swin_tiny_patch4_window7_224`) via `timm`
 - **Input Resolution**: 224×224 pixels
 - **Patch Size**: 4×4, Window Size: 7
-- **Output Classes**: 224 (200 CUB-200 + 24 Indian Birds)
+- **Output Classes**: 224 (200 CUB-200 + 25 Indian Birds)
 - **Dropout**: 0.3 (applied before classification head)
 - **Framework**: PyTorch + ONNX Runtime for deployment
 
@@ -106,7 +106,7 @@ Birds-classification/
 | Mixed Precision | AMP (GradScaler) |
 
 ### Data Pipeline
-- **Combined Manifest**: Merges CUB-200-2011 (200 classes) + Indian_Birds_25 (24 classes) → 224 total
+- **Combined Manifest**: Merges CUB-200-2011 (199 classes) + Indian_Birds_25 → 224 total
 - **Class-Balanced Sampling**: WeightedRandomSampler ensures equal class representation per batch
 - **Train Transforms**: RandomResizedCrop, HorizontalFlip, ColorJitter, RandAugment, MixUp
 - **Eval Transforms**: Resize 256 → CenterCrop 224 → Normalize (ImageNet stats)
